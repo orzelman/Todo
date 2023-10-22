@@ -7,7 +7,6 @@ export default function AddItem(props) {
   }
   function handleKeyDown(event) {
     if(event.nativeEvent.key==="Enter") {
-      console.log("enter");
       props.addTask(newItem)
     }
   }

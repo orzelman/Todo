@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import ListItem from "./ListItem";
 import ListFooter from "./ListFooter";
 import AddItem from "./AddItem";
 
 function List(props) {
-console.log(props.tasks)
+  const [filter, setFilter] = useState("all");
+  function newFilter(value) {
+    setFilter(value);
+  }
   return (
     <div className="todo-container">
       <div className="todo-logo"></div>
@@ -21,14 +24,43 @@ console.log(props.tasks)
             </svg>
           </h1>
         </div>
-        <AddItem addTask = {props.addTask}/>
+        <AddItem addTask={props.addTask} />
         <div className="todo-list">
-        {
-         props.tasks.map(task => {
-            return(<ListItem key={task} task = {task} />)
-         })
-         }
-         <ListFooter />
+          {props.tasks.map((task) => {
+            if (filter === "all") {
+              return (
+                <ListItem
+                  key={task._id}
+                  task={task}
+                  deleteTask={props.deleteTask}
+                  disactiveTask={props.disactiveTask}
+                />
+              );
+            } else if (filter === "active") {
+              return task.active ? (
+                <ListItem
+                  key={task._id}
+                  task={task}
+                  deleteTask={props.deleteTask}
+                  disactiveTask={props.disactiveTask}
+                />
+              ) : (
+                ""
+              );
+            } else if (filter === "completed") {
+              return task.active ? (
+                ""
+              ) : (
+                <ListItem
+                  key={task._id}
+                  task={task}
+                  deleteTask={props.deleteTask}
+                  disactiveTask={props.disactiveTask}
+                />
+              );
+            }
+          })}
+          <ListFooter tasks={props.tasks} newFilter={newFilter} />
         </div>
       </div>
     </div>
