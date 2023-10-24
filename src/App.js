@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import List from "./components/List";
 import db from "./db/database.json";
 
 function App() {
   const [tasks, setTasks] = useState(db);
-  tasks.map((task) => {
-    return task;
-  });
+  const [theme, setTheme] = useState("");
+  useEffect(() => {
+    const initialTheme = localStorage.getItem("theme") || "light";
+    localStorage.setItem("theme", initialTheme);
+    setTheme(initialTheme);
+  }, []);
+  function changeTheme() {
+    const newTheme = theme === "light" ? "dark" : "light";
+    localStorage.setItem("theme", newTheme);
+    setTheme(newTheme);
+    console.log("theme: ", theme)
+  }
+
   function addTask(newItem) {
     const maxId = () => {
       let currentMax = 0;
@@ -18,7 +28,7 @@ function App() {
     const newTask = {
       _id: maxId() + 1,
       content: newItem,
-      active: true
+      active: true,
     };
     const copyTasks = [...tasks];
     copyTasks.push(newTask);
@@ -35,13 +45,14 @@ function App() {
     setTasks(newTasks);
   }
   return (
-    <div className="App">
+    <div className={`app ${theme==="light"? "" : "dark"}`}>
       <div className="logo">
         <List
           tasks={tasks}
           addTask={addTask}
           deleteTask={deleteTask}
           disactiveTask={disactiveTask}
+          changeTheme={changeTheme}
         />
       </div>
     </div>
