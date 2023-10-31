@@ -14,10 +14,6 @@ export default function ListItem(props) {
     console.log("click cross");
     props.deleteTask(props.task._id);
   }
-  // function handleClickContent() {
-  //   console.log("click content");
-  //   props.disactiveTask(props.task._id);
-  // }
   return (
     <div
       className="todo-list-item"
@@ -54,12 +50,12 @@ export default function ListItem(props) {
         <p id="content">{props.task.content}</p>
       </div>
       <div
-        className={`item-cross ${state ? "" : "hide"}`}
+        className={`item-cross cross ${state ? "" : "hide"}`}
         onClick={handleClickCross}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class="cross">
           <path
-            class="cross-svg"
+            class="cross"
             fillRule="evenodd"
             d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"
           />
