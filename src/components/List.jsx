@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import ListItem from "./ListItem";
 import ListFooter from "./ListFooter";
 import AddItem from "./AddItem";
+import Filters from "./Filters";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import { SortableItem } from "../SortableItem";
 
 function List(props) {
   const [filter, setFilter] = useState("all");
@@ -42,46 +46,67 @@ function List(props) {
           </h2>
         </div>
         <AddItem addTask={props.addTask} />
+
         <div className="todo-list">
-          {props.tasks.map((task) => {
-            if (filter === "all") {
-              return (
-                <ListItem
+          <DndContext
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext items={props.tasks.map((task) => task.content)}>
+              {props.tasks.map((task) => (
+                <SortableItem
                   key={task._id}
+                  id={task.content}
                   task={task}
                   deleteTask={props.deleteTask}
                   disactiveTask={props.disactiveTask}
-                />
-              );
-            } else if (filter === "active") {
-              return task.active ? (
-                <ListItem
-                  key={task._id}
-                  task={task}
-                  deleteTask={props.deleteTask}
-                  disactiveTask={props.disactiveTask}
-                />
-              ) : (
-                ""
-              );
-            } else if (filter === "completed") {
-              return task.active ? (
-                ""
-              ) : (
-                <ListItem
-                  key={task._id}
-                  task={task}
-                  deleteTask={props.deleteTask}
-                  disactiveTask={props.disactiveTask}
-                />
-              );
-            }
-          })}
-          <ListFooter tasks={props.tasks} newFilter={newFilter} />
+                  filter={filter}
+                ></SortableItem>
+              ))}
+            </SortableContext>
+          </DndContext>
+
+          <ListFooter
+            tasks={props.tasks}
+            newFilter={newFilter}
+            clearCompleted={props.clearCompleted}
+            activeFilter={filter}
+          />
+        </div>
+        <div className="mobile-filter">
+          <Filters newFilter={newFilter} activeFilter={filter} />
+        </div>
+        <div className="todo-drag">
+          <p>Drag and drop to reorder list</p>
         </div>
       </div>
     </div>
   );
+
+  function handleDragEnd(event) {
+    const { active, over } = event;
+    let oldItem = props.tasks.findIndex((item) => item.content === active.id);
+    let newItem = props.tasks.findIndex((item) => item.content === over.id);
+    if (oldItem === newItem) {
+      console.log(event);
+      if (
+        event.activatorEvent.srcElement.nodeName === "svg" ||
+        event.activatorEvent.srcElement.nodeName === "path"
+      ) {
+
+      }
+      else {
+        console.log("changing...")
+        const newTasks = [...props.tasks];
+        const taskToChangeStatus = newTasks.find(
+          (task) => task.content === active.id
+        );
+        taskToChangeStatus.active = !taskToChangeStatus.active;
+        props.setTasks(newTasks)
+      }
+    }
+    props.setTasks(arrayMove(props.tasks, oldItem, newItem));
+  }
 }
 
 export default List;

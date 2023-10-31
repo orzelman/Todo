@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Filters from "./Filters";
 
 export default function ListFooter(props) {
   const leftActive = () => {
@@ -8,20 +9,23 @@ export default function ListFooter(props) {
     });
     return left;
   };
-  function handleClickFilter(e) {
-    props.newFilter(e.target.textContent.toLowerCase());
+  function handleClickClear() {
+    props.clearCompleted();
   }
   return (
     <div className="div-footer">
       <div className="footer-item">
         <p>{leftActive()} item left</p>
       </div>
-      <div className="footer-item">
-        <p onClick={handleClickFilter}>All</p>
-        <p onClick={handleClickFilter}>Active</p>
-        <p onClick={handleClickFilter}>Completed</p>
+      <div className="desktop-filter">
+        <Filters
+          newFilter={props.newFilter}
+          activeFilter={props.activeFilter}
+        />
       </div>
-      <div className="footer-item">Clear completed</div>
+      <div className="footer-item" onClick={handleClickClear}>
+        Clear completed
+      </div>
     </div>
   );
 }
