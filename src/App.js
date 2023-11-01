@@ -16,7 +16,6 @@ function App() {
     setTheme(newTheme);
     console.log("theme: ", theme);
   }
-
   function addTask(newItem) {
     console.log("add Task");
     const maxId = () => {
