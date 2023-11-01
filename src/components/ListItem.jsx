@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 export default function ListItem(props) {
-  console.log();
   const [state, setState] = useState(false);
   function handleMouseOver() {
     setState(true);
@@ -11,7 +10,6 @@ export default function ListItem(props) {
   }
   function handleClickCross(e) {
     e.stopPropagation();
-    console.log("click cross");
     props.deleteTask(props.task._id);
   }
   return (

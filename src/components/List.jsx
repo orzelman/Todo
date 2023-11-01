@@ -80,20 +80,16 @@ function List(props) {
     </div>
   );
   function handleDragEnd(event) {
-    console.log("drag");
     const { active, over } = event;
     let oldItem = props.tasks.findIndex((item) => item.content === active.id);
     let newItem = props.tasks.findIndex((item) => item.content === over.id);
     if (oldItem === newItem) {
-      console.log("the same");
       if (event.activatorEvent.target.classList.contains("cross")) {
-        console.log("cross");
         const newTasks = [...props.tasks];
         const taskToDel = newTasks.find((task) => task.content === active.id);
         const newArray = newTasks.filter((task) => task !== taskToDel);
         props.setTasks(newArray);
       } else {
-        console.log("changing...");
         const newTasks = [...props.tasks];
         const taskToChangeStatus = newTasks.find(
           (task) => task.content === active.id

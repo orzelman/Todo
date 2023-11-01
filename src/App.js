@@ -14,10 +14,8 @@ function App() {
     const newTheme = theme === "light" ? "dark" : "light";
     localStorage.setItem("theme", newTheme);
     setTheme(newTheme);
-    console.log("theme: ", theme);
   }
   function addTask(newItem) {
-    console.log("add Task");
     const maxId = () => {
       let currentMax = 0;
       tasks.forEach((item) => {
@@ -35,19 +33,16 @@ function App() {
     setTasks(copyTasks);
   }
   function deleteTask(id) {
-    console.log("delete Task");
     const newTasks = tasks.filter((task) => task._id !== id);
     setTasks(newTasks);
   }
   function disactiveTask(id) {
-    console.log("disactive Task");
     const newTasks = [...tasks];
     const taskToEdit = newTasks.find((task) => task._id === id);
     taskToEdit.active = !taskToEdit.active;
     setTasks(newTasks);
   }
   function clearCompleted() {
-    console.log("clear");
     const newTasks = tasks.filter((task) => task.active !== false);
     setTasks(newTasks);
   }

@@ -4,7 +4,6 @@ import ListItem from "./components/ListItem";
 
 
 export function SortableItem(props) {
-  console.log();
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: props.id });
   const style = {
